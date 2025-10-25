@@ -3,87 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Comparator</title>
+  <title>Text Comparator & Merger</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <i data-feather="file-text"></i>
-      <h1>Text Comparator</h1>
-    </div>
+<header class="header">
+  <div class="logo">
+    <i data-feather="git-merge"></i>
+    <h1>Text Merge Editor</h1>
+  </div>
+  <div class="header-actions">
     <button id="themeToggle" class="theme-btn" aria-label="Toggle dark mode">
       <i data-feather="moon"></i>
     </button>
-  </header>
+    <button id="modeToggle" class="mode-btn active">
+      <i data-feather="git-compare"></i> Compare
+    </button>
+  </div>
+</header>
 
-  <!-- MAIN -->
-  <main class="main">
-    <section class="compare-card">
+<main class="main">
+  <section class="compare-card">
 
-      <!-- INPUTS -->
-      <div class="inputs-grid">
-        <div class="input-group">
-          <label for="textA"><i data-feather="edit-3"></i> Text A</label>
-          <textarea id="textA" placeholder="Enter or paste the first text…"></textarea>
+    <div class="inputs-grid">
+      <div class="input-group">
+        <label for="textA"><i data-feather="file-text"></i> Text A (Base)</label>
+        <textarea id="textA" placeholder="Enter or paste base text…"></textarea>
+      </div>
+      <div class="input-group">
+        <label for="textB"><i data-feather="file-text"></i> Text B (Modified)</label>
+        <textarea id="textB" placeholder="Enter or paste modified text…"></textarea>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button id="compareBtn" class="btn-primary">
+        <i data-feather="git-compare"></i> Compare
+      </button>
+      <button id="clearBtn" class="btn-secondary">
+        <i data-feather="rotate-cw"></i> Clear
+      </button>
+    </div>
+
+    <div id="results" class="results hidden">
+      <div class="diff-grid">
+        <div class="diff-panel left">
+          <h3>Text A</h3>
+          <div id="htmlA" class="diff-content"></div>
         </div>
-        <div class="input-group">
-          <label for="textB"><i data-feather="edit-3"></i> Text B</label>
-          <textarea id="textB" placeholder="Enter or paste the second text…"></textarea>
+
+        <div class="diff-panel right">
+          <h3>Text B</h3>
+          <div id="htmlB" class="diff-content"></div>
         </div>
       </div>
 
-      <!-- ACTION BAR -->
-      <div class="action-bar">
-        <button id="compareBtn" class="btn-primary">
-          <i data-feather="git-compare"></i> Compare
+      <div id="stats" class="stats"></div>
+      <div id="changeSummary" class="change-summary"></div>
+
+      <div class="merge-controls">
+        <button id="saveMerged" class="btn-primary">
+          <i data-feather="save"></i> Save Merged Text
         </button>
-        <button id="clearBtn" class="btn-secondary">
-          <i data-feather="rotate-cw"></i> Clear
-        </button>
       </div>
 
-      <!-- RESULTS -->
-      <div id="results" class="results hidden">
-        <div class="diff-grid">
-          <div class="diff-panel left">
-            <h3>Text A</h3>
-            <div id="htmlA" class="diff-content"></div>
-          </div>
-          <div class="diff-panel right">
-            <h3>Text B</h3>
-            <div id="htmlB" class="diff-content"></div>
-          </div>
-        </div>
-
-        <div id="stats" class="stats"></div>
-        <div id="changeSummary" class="change-summary"></div>
-
-        <div class="export-bar">
-          <button id="copyTextBtn" class="btn-sm">Copy Text</button>
-          <button id="copyHtmlBtn" class="btn-sm">Copy HTML</button>
-          <button id="downloadTextBtn" class="btn-sm">Text</button>
-          <button id="downloadHtmlBtn" class="btn-sm">HTML</button>
-        </div>
+      <div class="export-bar">
+        <button id="copyTextBtn" class="btn-sm">Copy Text</button>
+        <button id="copyHtmlBtn" class="btn-sm">Copy HTML</button>
+        <button id="downloadTextBtn" class="btn-sm">Text</button>
+        <button id="downloadHtml979Btn" class="btn-sm">HTML</button>
       </div>
+    </div>
 
-    </section>
-  </main>
+  </section>
+</main>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>Built with <i data-feather="heart" class="icon-heart"></i> by <strong>Subhash Kumar Singh</strong></p>
-  </footer>
+<footer class="footer">
+  <p>Built and Design <i data-feather="heart" class="icon-heart"></i> by <strong>Subhash Kumar Singh</strong></p>
+</footer>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

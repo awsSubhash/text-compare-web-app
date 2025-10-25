@@ -12,15 +12,17 @@ function escapeHtml(text) {
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function countWords(text) {
-  return text.trim().split(/\s+/).filter(w => w).length;
+  return text.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
 app.post('/compare', (req, res) => {
-  const { textA, textB } = req.body;
+  const { textA = '', textB = '' } = req.body;
 
   let diffs = dmp.diff_main(textA, textB);
   dmp.diff_cleanupSemantic(diffs);
@@ -34,45 +36,52 @@ app.post('/compare', (req, res) => {
 
   let lineIdxA = 0;
   let lineIdxB = 0;
+  let globalLine = 0;
 
   for (let i = 0; i < diffs.length; i++) {
     const [op, data] = diffs[i];
     const lines = data.split('\n');
 
     for (let j = 0; j < lines.length; j++) {
-      const line = lines[j];
-      const isLastLine = j === lines.length - 1;
-      const isLastDiff = i === diffs.length - 1;
+      let line = lines[j];
+      const isLastLineInChunk = j === lines.length - 1;
+      const isLastChunk = i === diffs.length - 1;
+      const isEmpty = line === '';
+      const keepEmpty = isLastLineInChunk && isLastChunk;
+      const displayLine = (isEmpty && keepEmpty) ? ' ' : line;
 
-      if (op === 0) { // Equal
-        if (line !== '' || (isLastLine && isLastDiff)) {
-          htmlA += `<div class="line"><span class="num">${++lineIdxA}</span><span class="code equal">${escapeHtml(line)}</span></div>`;
-          htmlB += `<div class="line"><span class="num">${++lineIdxB}</span><span class="code equal">${escapeHtml(line)}</span></div>`;
-        }
-      } else if (op === -1) { // Delete
-        if (line !== '' || (isLastLine && isLastDiff)) {
-          htmlA += `<div class="line deleted"><span class="num">${++lineIdxA}</span><span class="code">${escapeHtml(line)}</span><span class="change-icon" title="Deleted">Removed</span></div>`;
+      if (isEmpty && !keepEmpty) continue;
+
+      globalLine++;
+
+      if (op === 0) {                                 // equal
+        htmlA += `<div class="line" data-index="${globalLine}"><span class="num">${++lineIdxA}</span><span class="code equal">${escapeHtml(displayLine)}</span></div>`;
+        htmlB += `<div class="line" data-index="${globalLine}"><span class="num">${++lineIdxB}</span><span class="code equal">${escapeHtml(displayLine)}</span></div>`;
+      } else if (op === -1) {                         // delete
+        htmlA += `<div class="line deleted" data-index="${globalLine}"><span class="num">${++lineIdxA}</span><span class="code">${escapeHtml(displayLine)}</span></div>`;
+        if (displayLine.trim()) {
           changeSummary.push(`Line ${lineIdxA}: deleted`);
-          removedWords += countWords(line);
+          removedWords += countWords(displayLine);
           numDiffs++;
         }
 
-        // Check if next is insert (modified)
+        // replace (delete + insert on same line)
         if (i + 1 < diffs.length && diffs[i + 1][0] === 1) {
-          const insertLine = diffs[++i][1].split('\n')[j] || '';
-          if (insertLine !== '' || (isLastLine && isLastDiff)) {
-            htmlB += `<div class="line modified"><span class="num">${++lineIdxB}</span><span class="code">${escapeHtml(insertLine)}</span><span class="change-icon" title="Modified">Modified</span></div>`;
+          const ins = diffs[++i][1].split('\n')[j] || ' ';
+          const insDisp = ins === '' ? ' ' : ins;
+          globalLine++;
+          htmlB += `<div class="line modified" data-index="${globalLine}"><span class="num">${++lineIdxB}</span><span class="code">${escapeHtml(insDisp)}</span></div>`;
+          if (insDisp.trim()) {
             changeSummary.push(`Line ${lineIdxB}: modified`);
-            addedWords += countWords(insertLine);
+            addedWords += countWords(insDisp);
             numDiffs++;
           }
-          continue;
         }
-      } else if (op === 1) { // Insert
-        if (line !== '' || (isLastLine && isLastDiff)) {
-          htmlB += `<div class="line inserted"><span class="num">${++lineIdxB}</span><span class="code">${escapeHtml(line)}</span><span class="change-icon" title="Inserted">Added</span></div>`;
+      } else if (op === 1) {                         // insert
+        htmlB += `<div class="line inserted" data-index="${globalLine}"><span class="num">${++lineIdxB}</span><span class="code">${escapeHtml(displayLine)}</span></div>`;
+        if (displayLine.trim()) {
           changeSummary.push(`Line ${lineIdxB}: inserted`);
-          addedWords += countWords(line);
+          addedWords += countWords(displayLine);
           numDiffs++;
         }
       }
@@ -87,6 +96,4 @@ app.post('/compare', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`http://localhost:${port}`));
