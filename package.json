@@ -1,0 +1,15 @@
+{
+  "name": "text-comparator",
+  "version": "1.0.0",
+  "description": "A modern text comparison web app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "diff-match-patch": "^1.0.5",
+    "express": "^4.18.2"
+  },
+  "author": "Subhash Kumar Singh",
+  "license": "MIT"
+}
