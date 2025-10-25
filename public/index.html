@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Comparator</title>
 
-  <!-- Google Font – Inter (clean & modern) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Feather Icons (lightweight, beautiful) -->
+  <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ==== HEADER ==== -->
+  <!-- HEADER -->
   <header class="header">
     <div class="logo">
       <i data-feather="file-text"></i>
@@ -26,7 +26,7 @@
     </button>
   </header>
 
-  <!-- ==== MAIN ==== -->
+  <!-- MAIN -->
   <main class="main">
     <section class="compare-card">
 
@@ -36,14 +36,13 @@
           <label for="textA"><i data-feather="edit-3"></i> Text A</label>
           <textarea id="textA" placeholder="Enter or paste the first text…"></textarea>
         </div>
-
         <div class="input-group">
           <label for="textB"><i data-feather="edit-3"></i> Text B</label>
           <textarea id="textB" placeholder="Enter or paste the second text…"></textarea>
         </div>
       </div>
 
-      <!-- ACTION BUTTONS -->
+      <!-- ACTION BAR -->
       <div class="action-bar">
         <button id="compareBtn" class="btn-primary">
           <i data-feather="git-compare"></i> Compare
@@ -57,29 +56,30 @@
       <div id="results" class="results hidden">
         <div class="diff-grid">
           <div class="diff-panel left">
-            <h3><i data-feather="file"></i> Text A</h3>
+            <h3>Text A</h3>
             <div id="htmlA" class="diff-content"></div>
           </div>
           <div class="diff-panel right">
-            <h3><i data-feather="file-check"></i> Text B</h3>
+            <h3>Text B</h3>
             <div id="htmlB" class="diff-content"></div>
           </div>
         </div>
 
         <div id="stats" class="stats"></div>
+        <div id="changeSummary" class="change-summary"></div>
 
         <div class="export-bar">
-          <button id="copyTextBtn" class="btn-sm"><i data-feather="clipboard"></i> Copy Text</button>
-          <button id="copyHtmlBtn" class="btn-sm"><i data-feather="code"></i> Copy HTML</button>
-          <button id="downloadTextBtn" class="btn-sm"><i data-feather="download"></i> Text</button>
-          <button id="downloadHtmlBtn" class="btn-sm"><i data-feather="download"></i> HTML</button>
+          <button id="copyTextBtn" class="btn-sm">Copy Text</button>
+          <button id="copyHtmlBtn" class="btn-sm">Copy HTML</button>
+          <button id="downloadTextBtn" class="btn-sm">Text</button>
+          <button id="downloadHtmlBtn" class="btn-sm">HTML</button>
         </div>
       </div>
 
     </section>
   </main>
 
-  <!-- ==== FOOTER ==== -->
+  <!-- FOOTER -->
   <footer class="footer">
     <p>Built with <i data-feather="heart" class="icon-heart"></i> by <strong>Subhash Kumar Singh</strong></p>
   </footer>

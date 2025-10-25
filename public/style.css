@@ -1,5 +1,5 @@
 /* -------------------------------------------------
-   VARIABLES – Light & Dark
+   VARIABLES
    ------------------------------------------------- */
 :root {
   --bg: #fafafa;
@@ -13,10 +13,10 @@
   --shadow: 0 10px 25px rgba(0,0,0,.07);
   --radius: 16px;
 
-  /* BEAUTIFUL DIFF HIGHLIGHTS – LIGHT MODE */
-  --deleted:   #ffe4e6;   /* Soft Rose Quartz */
-  --inserted:  #e6f7ff;   /* Sky Blue */
-  --modified:  #fff4d6;   /* Warm Amber */
+  /* BEAUTIFUL HIGHLIGHTS */
+  --deleted:   #ffe4e6;
+  --inserted:  #e6f7ff;
+  --modified:  #fff4d6;
 }
 
 [data-theme="dark"] {
@@ -30,10 +30,9 @@
   --border: #334155;
   --shadow: 0 10px 25px rgba(0,0,0,.3);
 
-  /* BEAUTIFUL DIFF HIGHLIGHTS – DARK MODE */
-  --deleted:   #5c1d1d;   /* Deep Rose */
-  --inserted:  #1a3a4d;   /* Deep Sky */
-  --modified:  #4a3d1a;   /* Rich Gold */
+  --deleted:   #5c1d1d;
+  --inserted:  #1a3a4d;
+  --modified:  #4a3d1a;
 }
 
 /* -------------------------------------------------
@@ -149,26 +148,20 @@ textarea:focus {
   cursor: pointer;
   transition: all .25s;
 }
-.btn-primary {
-  background: var(--primary);
-  color: white;
-}
+.btn-primary { background: var(--primary); color: white; }
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(99,102,241,.3);
 }
-.btn-secondary {
-  background: var(--secondary);
-  color: var(--text);
-}
+.btn-secondary { background: var(--secondary); color: var(--text); }
 .btn-secondary:hover {
   background: var(--secondary-hover);
   transform: translateY(-2px);
 }
 
 /* -------------------------------------------------
-   RESULTS
+   RESULTS – LINE NUMBERS & HIGHLIGHTS
    ------------------------------------------------- */
 .results { animation: fadeIn .4s ease; }
 .diff-grid {
@@ -180,49 +173,87 @@ textarea:focus {
 .diff-panel {
   background: var(--bg);
   border-radius: 12px;
-  padding: 1.25rem;
+  padding: 0;
   max-height: 500px;
-  overflow-y: auto;
+  overflow: hidden;
   border: 1px solid var(--border);
 }
 .diff-panel h3 {
-  margin-bottom: .75rem;
+  margin: 0;
+  padding: 1rem;
+  background: rgba(99,102,241,.1);
+  color: var(--primary);
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: .5rem;
-  color: var(--primary);
-  font-weight: 600;
 }
 .diff-content {
-  line-height: 1.7;
+  max-height: 460px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  padding: 0.5rem 0;
+}
+[data-theme="dark"] .diff-content { background: #1a1a1a; }
+
+/* CODE BLOCK & LINES */
+.code-block {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.line {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+.line::before {
+  content: counter(line);
+  counter-increment: line;
+  width: 3.5rem;
+  text-align: right;
+  padding: 0 0.75rem;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  user-select: none;
+  border-right: 1px solid #e2e8f0;
+  background: #f1f5f9;
+}
+[data-theme="dark"] .line::before {
+  color: #64748b;
+  border-right-color: #334155;
+  background: #0f172a;
+}
+.code {
+  flex: 1;
+  padding: 0 0.75rem;
   white-space: pre-wrap;
   word-break: break-word;
 }
+.change-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+.line.deleted   { background: var(--deleted); }
+.line.inserted  { background: var(--inserted); }
+.line.modified  { background: var(--modified); }
 
-/* BEAUTIFUL DIFF HIGHLIGHTS */
-.diff-deleted   { 
-  background: var(--deleted); 
-  padding: 0 .25rem; 
-  border-radius: 4px; 
-  text-decoration: line-through; 
-}
-.diff-inserted  { 
-  background: var(--inserted); 
-  padding: 0 .25rem; 
-  border-radius: 4px; 
-}
-.diff-modified  { 
-  background: var(--modified); 
-  padding: 0 .25rem; 
-  border-radius: 4px; 
-}
-
-.stats {
+/* STATS & SUMMARY */
+.stats, .change-summary {
   text-align: center;
   font-weight: 500;
   color: var(--primary);
   margin: 1.25rem 0;
   font-size: .95rem;
+}
+.change-summary {
+  background: rgba(99,102,241,.1);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
 }
 
 /* EXPORT BAR */
